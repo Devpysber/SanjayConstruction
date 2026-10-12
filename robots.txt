@@ -1,0 +1,6 @@
+# Sanjay Construction — https://sanjayconstruction.co.in
+User-agent: *
+Allow: /
+Disallow: /.claude/
+
+Sitemap: https://sanjayconstruction.co.in/sitemap.xml
