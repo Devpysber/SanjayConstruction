@@ -59,6 +59,168 @@
     window.addEventListener("resize", function () { if (window.innerWidth > 960) setNav(false); });
   }
 
+  /* ---------- Hero background image slider ---------- */
+  var heroSlider = $("[data-hero-slider]");
+  if (heroSlider) {
+    var slides = $$(".hero__slide", heroSlider);
+    var captionEl = $("[data-hero-caption]", heroSlider);
+    var sideEl = $("[data-hero-side]", heroSlider);
+    var dotsContainer = $("[data-hero-dots]", heroSlider);
+    var prevBtn = $("[data-hero-prev]", heroSlider);
+    var nextBtn = $("[data-hero-next]", heroSlider);
+    var currentSlide = 0;
+    var heroTimer = null;
+    var INTERVAL = 5500;
+
+    if (slides.length > 1) {
+      // Build dots
+      dotsContainer.innerHTML = "";
+      slides.forEach(function (_, i) {
+        var dot = document.createElement("button");
+        dot.type = "button";
+        dot.className = "hero__dot" + (i === 0 ? " is-active" : "");
+        dot.setAttribute("aria-label", "Go to slide " + (i + 1));
+        dot.addEventListener("click", function () { goToSlide(i); restartTimer(); });
+        dotsContainer.appendChild(dot);
+      });
+
+      var kickerEl = $(".hero__kicker", heroSlider);
+      var titleLine1 = $(".hero__title .line:nth-child(1) span", heroSlider);
+      var titleLine2 = $(".hero__title .line:nth-child(2) span", heroSlider);
+      var titleLine3 = $(".hero__title .line:nth-child(3) span", heroSlider);
+      var leadEl = $(".hero__lead", heroSlider);
+      var expLabelEl = $(".hero__stat--exp .hero__stat-label", heroSlider);
+
+      // Store default text values
+      var defaultText = {
+        kicker: kickerEl ? kickerEl.innerHTML : "",
+        t1: titleLine1 ? titleLine1.innerHTML : "",
+        t2: titleLine2 ? titleLine2.innerHTML : "",
+        t3: titleLine3 ? titleLine3.innerHTML : "",
+        lead: leadEl ? leadEl.innerHTML : "",
+        expLabel: expLabelEl ? expLabelEl.innerHTML : ""
+      };
+
+      function goToSlide(index) {
+        currentSlide = (index + slides.length) % slides.length;
+        slides.forEach(function (s, i) {
+          s.classList.toggle("is-active", i === currentSlide);
+        });
+        $$(".hero__dot", dotsContainer).forEach(function (d, i) {
+          d.classList.toggle("is-active", i === currentSlide);
+        });
+        var active = slides[currentSlide];
+        var isNoText = active.getAttribute("data-no-text") === "true";
+        var theme = active.getAttribute("data-theme");
+
+        heroSlider.classList.toggle("is-no-text", isNoText);
+
+        // Remove any previous is-theme-* classes and apply current theme
+        Array.prototype.slice.call(heroSlider.classList).forEach(function (cls) {
+          if (cls.indexOf("is-theme-") === 0) {
+            heroSlider.classList.remove(cls);
+          }
+        });
+        if (theme) {
+          heroSlider.classList.add("is-theme-" + theme);
+        }
+
+        // Dynamic text content per slide
+        if (!isNoText) {
+          if (active.dataset.kicker && kickerEl) {
+            kickerEl.innerHTML = active.dataset.kicker;
+          } else if (kickerEl) {
+            kickerEl.innerHTML = defaultText.kicker;
+          }
+
+          if (active.dataset.title1 && titleLine1) {
+            titleLine1.innerHTML = active.dataset.title1;
+            titleLine2.innerHTML = active.dataset.title2 || "";
+            titleLine3.innerHTML = active.dataset.title3 || "";
+            var line2 = titleLine2 ? titleLine2.closest(".line") : null;
+            if (line2) line2.style.display = active.dataset.title2 ? "" : "none";
+          } else {
+            if (titleLine1) titleLine1.innerHTML = defaultText.t1;
+            if (titleLine2) {
+              titleLine2.innerHTML = defaultText.t2;
+              var line2 = titleLine2.closest(".line");
+              if (line2) line2.style.display = "";
+            }
+            if (titleLine3) titleLine3.innerHTML = defaultText.t3;
+          }
+
+          if (active.dataset.lead && leadEl) {
+            leadEl.innerHTML = active.dataset.lead;
+          } else if (leadEl) {
+            leadEl.innerHTML = defaultText.lead;
+          }
+
+          if (expLabelEl) {
+            if (active.dataset.statExpLabel) {
+              expLabelEl.innerHTML = active.dataset.statExpLabel;
+            } else {
+              expLabelEl.innerHTML = defaultText.expLabel;
+            }
+          }
+        }
+
+        if (captionEl) {
+          if (active.dataset.caption) {
+            captionEl.style.opacity = "0";
+            setTimeout(function () {
+              captionEl.innerHTML = active.dataset.caption;
+              captionEl.style.opacity = "1";
+            }, 200);
+          } else {
+            captionEl.style.opacity = "0";
+          }
+        }
+        if (sideEl) {
+          if (active.dataset.side) {
+            sideEl.style.opacity = "0";
+            setTimeout(function () {
+              sideEl.innerHTML = active.dataset.side;
+              sideEl.style.opacity = "1";
+            }, 200);
+          } else {
+            sideEl.style.opacity = "0";
+          }
+        }
+      }
+
+      function nextSlide() { goToSlide(currentSlide + 1); }
+      function prevSlide() { goToSlide(currentSlide - 1); }
+
+      function startTimer() {
+        if (!reduceMotion && !heroTimer) {
+          heroTimer = setInterval(nextSlide, INTERVAL);
+        }
+      }
+      function stopTimer() {
+        if (heroTimer) { clearInterval(heroTimer); heroTimer = null; }
+      }
+      function restartTimer() { stopTimer(); startTimer(); }
+
+      if (prevBtn) prevBtn.addEventListener("click", function () { prevSlide(); restartTimer(); });
+      if (nextBtn) nextBtn.addEventListener("click", function () { nextSlide(); restartTimer(); });
+
+      // Only pause when hovering directly over the navigation buttons / controls
+      var navControls = $(".hero__nav", heroSlider);
+      if (navControls) {
+        navControls.addEventListener("mouseenter", stopTimer);
+        navControls.addEventListener("mouseleave", startTimer);
+      }
+
+      // Resume timer on visibility change (tab switch back)
+      document.addEventListener("visibilitychange", function () {
+        if (document.hidden) stopTimer();
+        else startTimer();
+      });
+
+      startTimer();
+    }
+  }
+
   /* ---------- Reveal on scroll (with optional stagger) ---------- */
   $$("[data-stagger]").forEach(function (group) {
     $$(".reveal", group).forEach(function (el, i) { el.style.setProperty("--d", (i * 0.12) + "s"); });
@@ -235,7 +397,7 @@
       narrow: { bands: [["m-wide", "m-tall", "m-sq", "m-sq"], ["m-sq", "m-sq", "m-wide"]],
                 fallback: { 1: ["m-wide"], 2: ["m-sq", "m-sq"], 3: ["m-sq", "m-sq", "m-wide"] } }
     };
-    var state = { filter: "all", page: 1 };
+    var state = { filter: "all" };
 
     function matches(c) { return state.filter === "all" || c.dataset.cat.split(" ").indexOf(state.filter) > -1; }
 
@@ -259,19 +421,15 @@
 
     function render(scroll) {
       var list = cards.filter(matches);
-      var pages = Math.max(1, Math.ceil(list.length / PER_PAGE));
-      state.page = Math.min(state.page, pages);
-      var start = (state.page - 1) * PER_PAGE;
-      var pageItems = list.slice(start, start + PER_PAGE);
       cards.forEach(function (c) {
-        c.classList.toggle("is-hidden", pageItems.indexOf(c) === -1);
+        c.classList.toggle("is-hidden", list.indexOf(c) === -1);
       });
-      layout(pageItems);
+      layout(list);
       if (doc.classList.contains("motion") && !reduceMotion) {
-        pageItems.forEach(function (el, k) {
+        list.forEach(function (el, k) {
           el.classList.remove("tile-in");
           void el.offsetWidth;
-          el.style.animationDelay = (k * 0.06) + "s";
+          el.style.animationDelay = (k * 0.04) + "s";
           el.classList.add("tile-in");
         });
       }
@@ -280,21 +438,6 @@
 
       if (pager) {
         pager.innerHTML = "";
-        if (pages > 1) {
-          var mk = function (html, page, opts) {
-            var b = document.createElement("button");
-            b.type = "button";
-            b.innerHTML = html;
-            if (opts && opts.label) b.setAttribute("aria-label", opts.label);
-            if (page === state.page && !(opts && opts.arrow)) b.setAttribute("aria-current", "page");
-            if (opts && opts.disabled) b.disabled = true;
-            b.addEventListener("click", function () { state.page = page; render(true); });
-            pager.appendChild(b);
-          };
-          mk('<svg aria-hidden="true"><use href="#i-left"/></svg>', state.page - 1, { arrow: true, label: "Previous page", disabled: state.page === 1 });
-          for (var p = 1; p <= pages; p++) mk(String(p), p, { label: "Page " + p });
-          mk('<svg aria-hidden="true"><use href="#i-arrow"/></svg>', state.page + 1, { arrow: true, label: "Next page", disabled: state.page === pages });
-        }
       }
       if (scroll) {
         var y = filterBar.getBoundingClientRect().top + window.scrollY - 100;
@@ -314,7 +457,6 @@
       var btn = e.target.closest(".filter");
       if (!btn) return;
       state.filter = btn.getAttribute("data-filter");
-      state.page = 1;
       $$(".filter", filterBar).forEach(function (b) { b.setAttribute("aria-pressed", String(b === btn)); });
       render(false);
     });

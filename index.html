@@ -18,7 +18,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600&display=swap">
   <script>if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) document.documentElement.classList.add("motion");</script>
-  <link rel="stylesheet" href="assets/css/style.css?v=34">
+  <link rel="stylesheet" href="assets/css/style.css?v=37">
   <link rel="preload" as="image" href="assets/img/projects/taj-mumbai.webp" imagesrcset="assets/img/projects/taj-mumbai-sm.webp 800w, assets/img/projects/taj-mumbai.webp 1600w" imagesizes="100vw">
   <script type="application/ld+json">
   {
@@ -116,11 +116,27 @@
 <main id="main">
 
   <!-- ============ HERO ============ -->
-  <section class="hero" aria-labelledby="hero-title">
-    <div class="hero__media" data-parallax="0.12">
-      <img src="assets/img/projects/taj-mumbai.webp" srcset="assets/img/projects/taj-mumbai-sm.webp 800w, assets/img/projects/taj-mumbai.webp 1600w" sizes="(min-width: 900px) 64vw, 100vw" alt="The Taj Hotel, Mumbai — structural repairs by Sanjay Construction" fetchpriority="high" width="1600" height="1190">
+  <section class="hero" aria-labelledby="hero-title" data-hero-slider>
+    <div class="hero__slider" data-parallax="0.12">
+      <div class="hero__slide is-active" data-caption="Taj Mahal Palace Hotel, Mumbai · Structural repairs" data-side="Mumbai · Goa<br>Gujarat · Kochi<br>Abu Dhabi">
+        <img src="assets/img/projects/taj-mumbai.webp" srcset="assets/img/projects/taj-mumbai-sm.webp 800w, assets/img/projects/taj-mumbai.webp 1600w" sizes="(min-width: 900px) 64vw, 100vw" alt="The Taj Mahal Palace, Mumbai — structural repairs by Sanjay Construction" fetchpriority="high" width="1600" height="1190">
+      </div>
+      <div class="hero__slide hero__slide--full" data-no-text="true" data-caption="Raj Bhavan Bunker Inauguration with the President of India &amp; CMD Sanjay Rathod" data-side="">
+        <img src="assets/img/hero-rajbhavan-dignitaries.webp" srcset="assets/img/hero-rajbhavan-dignitaries-sm.webp 700w, assets/img/hero-rajbhavan-dignitaries.webp 1024w" sizes="100vw" alt="Raj Bhavan Bunker Inauguration with the President of India, Governor, CM, and CMD Sanjay Rathod" loading="lazy" width="1024" height="397">
+      </div>
+      <div class="hero__slide hero__slide--hawamahal" data-theme="hawa-mockup" data-kicker="CIVIL ENGINEERS · EST. 1988" data-title-1="Preserving" data-title-2="heritage." data-title-3="Building<br>stronger tomorrow." data-lead="Delivering structural repairs, heritage conservation, waterproofing and RCC construction for buildings that last for generations." data-stat-exp-label="Years of<br>experience" data-caption="Hawa Mahal Palace, Paithan · Heritage Conservation" data-side="Paithan · Morbi<br>Surat · Mumbai<br>Silvassa">
+        <img src="assets/img/projects/pf-hawa-mahal-hero.webp" srcset="assets/img/projects/pf-hawa-mahal-hero-sm.webp 800w, assets/img/projects/pf-hawa-mahal-hero.webp 1024w" sizes="100vw" alt="Hawa Mahal Palace, Paithan — heritage conservation by Sanjay Construction" loading="lazy" width="1024" height="576">
+      </div>
+      <div class="hero__slide hero__slide--falaknuma" data-theme="falaknuma" data-kicker="CIVIL ENGINEERS · EST. 1988" data-title-1="Restoring History." data-title-2="" data-title-3="Building for Generations." data-lead="Expertise in structural repairs, heritage conservation, waterproofing and RCC construction for iconic buildings and institutions." data-stat-exp-label="Years of<br>experience" data-caption="Taj Falaknuma Palace, Hyderabad · Retrofitting &amp; Waterproofing" data-side="Hyderabad · Mumbai<br>Goa · Andaman<br>Abu Dhabi">
+        <img src="assets/img/projects/pf-taj-falaknuma-hero.webp" srcset="assets/img/projects/pf-taj-falaknuma-hero-sm.webp 800w, assets/img/projects/pf-taj-falaknuma-hero.webp 1024w" sizes="100vw" alt="Taj Falaknuma Palace, Hyderabad — retrofitting &amp; waterproofing by Sanjay Construction" loading="lazy" width="1024" height="409">
+      </div>
     </div>
-    <p class="hero__caption">Taj Hotel, Mumbai · Structural repairs</p>
+    <p class="hero__caption" data-hero-caption>Taj Mahal Palace Hotel, Mumbai · Structural repairs</p>
+    <div class="hero__nav" aria-label="Hero slider controls">
+      <button class="hero__nav-btn hero__nav-btn--prev" type="button" data-hero-prev aria-label="Previous image"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
+      <div class="hero__dots" data-hero-dots></div>
+      <button class="hero__nav-btn hero__nav-btn--next" type="button" data-hero-next aria-label="Next image"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+    </div>
     <div class="container hero__inner">
       <div class="hero__content">
         <p class="hero__kicker">Construct <i></i> Repair <i></i> Restore</p>
@@ -135,14 +151,14 @@
           <a class="btn btn--outline" href="projects.html">View projects</a>
         </div>
         <div class="hero__stats">
-          <div class="hero__stat"><b data-count="1988" data-from="1950">1988</b><span>Year<br>established</span></div>
-          <div class="hero__stat"><b><span data-count="30">30</span><sup>+</sup></b><span>Years CMD<br>experience</span></div>
-          <div class="hero__stat"><b><span data-count="45">45</span><sup>+</sup></b><span>Projects<br>completed</span></div>
-          <div class="hero__stat"><b data-count="6">6</b><span>Specialist<br>services</span></div>
+          <div class="hero__stat hero__stat--est"><b data-count="1988" data-from="1950">1988</b><span>Year<br>established</span></div>
+          <div class="hero__stat hero__stat--exp"><b><span data-count="30">30</span><sup>+</sup></b><span class="hero__stat-label">Years CMD<br>experience</span></div>
+          <div class="hero__stat hero__stat--proj"><b><span data-count="45">45</span><sup>+</sup></b><span>Projects<br>completed</span></div>
+          <div class="hero__stat hero__stat--svc"><b data-count="6">6</b><span>Specialist<br>services</span></div>
         </div>
       </div>
     </div>
-    <p class="hero__side">Mumbai · Goa<br>Gujarat · Kochi<br>Abu Dhabi</p>
+    <p class="hero__side" data-hero-side>Mumbai · Goa<br>Gujarat · Kochi<br>Abu Dhabi</p>
   </section>
 
   <!-- ============ SERVICES ============ -->
@@ -482,6 +498,6 @@
   <svg aria-hidden="true"><use href="#i-whatsapp"/></svg><span>WhatsApp us</span>
 </a>
 
-<script src="assets/js/main.js?v=23" defer></script>
+<script src="assets/js/main.js?v=37" defer></script>
 </body>
 </html>
